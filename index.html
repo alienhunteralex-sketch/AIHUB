@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Каталог 50+ лучших нейросетей. AI инструменты для текста, картинок, видео и кода.">
+    <title>AI HUB PRO — Найди свой AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* === НАСТРОЙКИ ДИЗАЙНА === */
+        :root {
+            --primary: #6366f1; /* Индиго */
+            --primary-light: #818cf8;
+            --bg: #f8fafc; /* Светло-серый фон */
+            --surface: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --accent: #f43f5e; /* Розовый акцент */
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Nunito', sans-serif; }
+
+        body { background-color: var(--bg); color: var(--text-main); }
+
+        /* === ШАПКА === */
+        header {
+            background: var(--surface);
+            box-shadow: var(--shadow);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        .logo span { color: var(--text-main); }
+        .logo i { font-size: 1.3rem; }
+
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav a { text-decoration: none; color: var(--text-muted); font-weight: 700; transition: 0.2s; cursor: pointer; border-bottom: 3px solid transparent; padding-bottom: 5px; }
+        nav a:hover, nav a.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+        .auth-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .auth-btn:hover { transform: scale(1.05); }
+
+        .user-profile { display: none; align-items: center; gap: 10px; cursor: pointer; }
+        .user-profile img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary); }
+
+        /* === ГЕРОЙ И ПОИСК === */
+        .hero {
+            text-align: center;
+            padding: 4rem 1rem 2rem;
+            background: linear-gradient(180deg, #eef2ff 0%, var(--bg) 100%);
+        }
+        .hero h1 { font-size: 3rem; margin-bottom: 1rem; }
+        .hero h1 span { color: var(--primary); }
+        
+        .search-box {
+            max-width: 500px;
+            margin: 2rem auto 0;
+            position: relative;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 1.2rem 1.5rem 1.2rem 3rem;
+            border-radius: 30px;
+            border: 2px solid var(--border);
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+        .search-box input:focus { border-color: var(--primary); box-shadow: var(--shadow); }
+        .search-box i { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+
+        /* === КОНТЕНТ === */
+        .container { max-width: 1300px; margin: 0 auto; padding: 2rem; }
+
+        /* Фильтры */
+        .filters { display: flex; gap: 10px; margin-bottom: 2rem; flex-wrap: wrap; }
+        .chip {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        .chip:hover { border-color: var(--primary); color: var(--primary); }
+        .chip.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Сетка карточек */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--primary-light); }
+        
+        .card-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: #ecfdf5;
+            color: #059669;
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .card-title { font-weight: 800; font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .card-cat { color: var(--primary); font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem; display: block; }
+        .card-desc { color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; flex-grow: 1; }
+        
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+        .price { font-weight: 700; color: var(--accent); font-size: 0.9rem; }
+
+        /* Пагинация */
+        .pagination { display: flex; justify-content: center; gap: 10px; margin-top: 3rem; }
+        .page-btn { width: 40px; height: 40px; border: 1px solid var(--border); background: var(--surface); border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .page-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* === КОЛЛЕКЦИИ === */
+        .collections-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+        .collection-card {
+            background: linear-gradient(135deg, var(--primary) 0%, #a855f7 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 200px;
+        }
+        .collection-card:hover { transform: scale(1.03); }
+        .collection-card h3 { font-size: 1.4rem; margin-bottom: 0.5rem; }
+        .collection-card p { opacity: 0.9; font-size: 0.9rem; }
+        .collection-icon { font-size: 2rem; margin-bottom: 1rem; }
+
+        /* === ПРОФИЛЬ === */
+        .profile-card { max-width: 600px; margin: 0 auto; background: var(--surface); padding: 3rem; border-radius: 20px; text-align: center; box-shadow: var(--shadow); }
+        .profile-avatar { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 1rem; border: 4px solid var(--primary); }
+
+        /* === МОДАЛКА (ОПИСАНИЕ ИНСТРУМЕНТА) === */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .modal {
+            background: var(--surface);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        
+        .modal-header { padding: 2rem 2rem 1rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 20px; }
+        .modal-icon { width: 60px; height: 60px; background: #f1f5f9; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+        
+        .modal-body { padding: 2rem; }
+        .modal-section { margin-bottom: 1.5rem; }
+        .modal-section h4 { color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.5rem; }
+        .tag { display: inline-block; padding: 4px 12px; background: #eef2ff; color: var(--primary); border-radius: 20px; font-size: 0.8rem; margin-right: 5px; font-weight: 600; }
+        
+        .btn-visit {
+            display: block;
+            width: 100%;
+            background: var(--text-main);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1rem;
+            margin-top: 1rem;
+            transition: 0.3s;
+        }
+        .btn-visit:hover { background: var(--primary); }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #f1f5f9;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Адаптив */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            nav ul { display: none; }
+            .modal-header { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ШАПКА -->
+    <header>
+        <div class="logo" onclick="showPage('home')"><i class="fas fa-bolt"></i> AI<span>HUB</span></div>
+        <nav>
+            <ul>
+                <li><a class="nav-link active" onclick="showPage('home')">Главная</a></li>
+                <li><a class="nav-link" onclick="showPage('catalog')">Каталог</a></li>
+                <li><a class="nav-link" onclick="showPage('collections')">Коллекции</a></li>
+            </ul>
+        </nav>
+        <div class="auth-zone">
+            <button class="auth-btn" id="loginBtn" onclick="openModal('auth')"><i class="fas fa-user"></i> Войти</button>
+            <div class="user-profile" id="userProfile" onclick="showPage('profile')">
+                <span id="userName">User</span>
+                <img src="https://ui-avatars.com/api/?background=random" id="userAvatar">
+            </div>
+        </div>
+    </header>
+
+    <!-- СТРАНИЦА: ГЛАВНАЯ -->
+    <div id="page-home" class="page">
+        <section class="hero">
+            <h1>Найди идеальный <span>AI</span> инструмент</h1>
+            <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">Более 50 проверенных нейросетей для работы, творчества и учебы. Без воды, только суть.</p>
+            
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="mainSearch" placeholder="Например: генерация видео..." oninput="handleSearch(this.value)">
+            </div>
+        </section>
+
+        <div class="container">
+            <h3 style="margin-bottom: 1.5rem;">🔥 Популярное сейчас</h3>
+            <div class="tools-grid" id="homeGrid"></div>
+        </div>
+    </div>
+
+    <!-- СТРАНИЦА: КАТАЛОГ -->
+    <div id="page-catalog" class="page" style="display: none;">
+        <div class="container">
+            <div class="filters" id="filters">
+                <button class="chip active" onclick="filterCategory('all')">Все</button>
+                <button class="chip" onclick="filterCategory('text')">Текст</button>
+                <button class="chip" onclick="filterCategory('image')">Картинки</button>
+                <button class="chip" onclick="filterCategory('video')">Видео</button>
+                <button class="chip" onclick="filterCategory('audio')">Аудио</button>
+                <button class="chip" onclick="filterCategory('code')">Код</button>
+                <button class="chip" onclick="filterCategory('research')">Исследования</button>
+            </div>
+            
+            <div class="tools-grid" id="catalogGrid"></div>
+            
+            <div class="pagination" id="pagination"></div>
+        </div>
+    </div>
+
+    <!-- СТРАНИЦА: КОЛЛЕКЦИИ -->
+    <div id="page-collections" class="page" style="display: none;">
+        <div class="container">
+            <h2 style="margin-bottom: 1rem;">Готовые подборки</h2>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Мы сгруппировали инструменты для конкретных задач.</p>
+            
+            <div class="collections-grid">
+                <div class="collection-card" style="background: linear-gradient(135deg, #f43f5e 0%, #fb7185 100%);" onclick="openCollection('content')">
+                    <div><i class="fas fa-pencil-alt collection-icon"></i><h3>Контент-мейкерам</h3><p>Для постов, блогов и соцсетей.</p></div>
+                    <span>12 инструментов &rarr;</span>
+                </div>
+                <div class="collection-card" style="background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);" onclick="openCollection('code')">
+                    <div><i class="fas fa-code collection-icon"></i><h3>Разработчикам</h3><p>Генерация кода и отладка.</p></div>
+                    <span>8 инструментов &rarr;</span>
+                </div>
+                <div class="collection-card" style="background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);" onclick="openCollection('image')">
+                    <div><i class="fas fa-palette collection-icon"></i><h3>Дизайнерам</h3><p>Генерация и редактирование артов.</p></div>
+                    <span>15 инструментов &rarr;</span>
+                </div>
+                <div class="collection-card" style="background: linear-gradient(135deg, #10b981 0%, #34d399 100%);" onclick="openCollection('office')">
+                    <div><i class="fas fa-briefcase collection-icon"></i><h3>Офис и Работа</h3><p>Презентации, встречи, документы.</p></div>
+                    <span>10 инструментов &rarr;</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- СТРАНИЦА: ПРОФИЛЬ -->
+    <div id="page-profile" class="page" style="display: none;">
+        <div class="container">
+            <div class="profile-card">
+                <img src="https://ui-avatars.com/api/?size=128&background=random" class="profile-avatar" id="profileBigAvatar">
+                <h2 id="profileBigName">User Name</h2>
+                <p style="color: var(--text-muted)" id="profileBigEmail">email@example.com</p>
+                <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--border);">
+                <div style="display: flex; justify-content: center; gap: 2rem; text-align: center;">
+                    <div><h3>0</h3><p style="font-size: 0.8rem; color: var(--text-muted)">Избранное</p></div>
+                    <div><h3>0</h3><p style="font-size: 0.8rem; color: var(--text-muted)">История</p></div>
+                </div>
+                <button class="auth-btn" style="background: var(--accent); margin-top: 2rem; width: 100%;" onclick="logout()">Выйти из аккаунта</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛКА: ПРОСМОТР ИНСТРУМЕНТА -->
+    <div class="modal-overlay" id="toolModal" onclick="closeModal('tool')">
+        <div class="modal" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closeModal('tool')">&times;</button>
+            <div class="modal-header">
+                <div class="modal-icon" id="modal-icon"><i class="fas fa-robot"></i></div>
+                <div>
+                    <h2 id="modal-title">Название</h2>
+                    <span class="tag" id="modal-cat">Категория</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <h4>Описание</h4>
+                    <p id="modal-desc">Описание инструмента...</p>
+                </div>
+                <div class="modal-section">
+                    <h4>Возможности</h4>
+                    <div id="modal-tags"></div>
+                </div>
+                <div class="modal-section">
+                    <h4>Модель оплаты</h4>
+                    <p id="modal-price" style="font-weight: 700; color: var(--primary);">Free / Paid</p>
+                </div>
+                <a href="#" id="modal-link" target="_blank" class="btn-visit">Перейти на сайт <i class="fas fa-external-link-alt"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛКА: АВТОРИЗАЦИЯ -->
+    <div class="modal-overlay" id="authModal" onclick="closeModal('auth')">
+        <div class="modal" onclick="event.stopPropagation()" style="max-width: 400px; text-align: center;">
+            <button class="close-btn" onclick="closeModal('auth')">&times;</button>
+            <div style="padding: 2rem;">
+                <i class="fas fa-user-circle" style="font-size: 4rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                <h2>Добро пожаловать!</h2>
+                <p style="color: var(--text-muted); margin: 1rem 0;">Войдите, чтобы сохранять избранное и управлять коллекциями.</p>
+                
+                <button class="auth-btn" style="width: 100%; background: white; color: #333; border: 1px solid var(--border); margin-bottom: 1rem;" onclick="login()">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" style="width: 20px; vertical-align: middle; margin-right: 10px;">
+                    Войти через Google
+                </button>
+                <button class="auth-btn" style="width: 100%; background: #0088cc;" onclick="login()">
+                    <i class="fab fa-telegram"></i> Войти через Telegram
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // === БАЗА ДАННЫХ (50 ИНСТРУМЕНТОВ) ===
+        const database = [
+            // TEXT
+            { id: 1, name: "ChatGPT", cat: "text", icon: "fas fa-brain", color: "#10b981", price: "Freemium", badge: "Топ", desc: "Мощный чат-бот от OpenAI. Пишет тексты, код, помогает с идеями.", tags: ["Чат", "Код", "Текст"] },
+            { id: 2, name: "Claude 3", cat: "text", icon: "fas fa-robot", color: "#d97706", price: "Freemium", badge: "Топ", desc: "Конкурент GPT-4 с огромным контекстным окном. Отлично пишет длинные тексты.", tags: ["Текст", "Анализ", "Сводки"] },
+            { id: 3, name: "Gemini", cat: "text", icon: "fas fa-star", color: "#3b82f6", price: "Free", badge: "", desc: "Модель от Google, интегрированная в生态系统 Google.", tags: ["Google", "Текст", "Картинки"] },
+            { id: 4, name: "Jasper", cat: "text", icon: "fas fa-pen-nib", color: "#e11d48", price: "Paid", badge: "", desc: "Маркетинговый копирайтинг. Шаблоны для рекламы, блогов и email.", tags: ["Маркетинг", "Копирайтинг"] },
+            { id: 5, name: "Copy.ai", cat: "text", icon: "fas fa-copy", color: "#6366f1", price: "Freemium", badge: "", desc: "Генерация продающих текстов и постов для соцсетей.", tags: ["Текст", "Продажи"] },
+            { id: 6, name: "Notion AI", cat: "text", icon: "fas fa-sticky-note", color: "#000", price: "Paid", badge: "", desc: "AI внутри вашего блокнота. Саммари, расширение текста, перевод.", tags: ["Заметки", "Продуктивность"] },
+            { id: 7, name: "Writesonic", cat: "text", icon: "fas fa-file-alt", color: "#8b5cf6", price: "Freemium", badge: "", desc: "Создание статей, описаний товаров и рекламных копий.", tags: ["Блог", "SEO"] },
+            { id: 8, name: "Rytr", cat: "text", icon: "fas fa-feather-alt", color: "#ec4899", price: "Freemium", badge: "", desc: "Бюджетный помощник для написания различных текстов.", tags: ["Текст", "Универсал"] },
+            
+            // IMAGE
+            { id: 9, name: "Midjourney", cat: "image", icon: "fas fa-paint-brush", color: "#ec4899", price: "Paid", badge: "Топ", desc: "Лучшее качество генерации изображений. Художественный стиль.", tags: ["Арт", "Дизайн", "HD"] },
+            { id: 10, name: "DALL-E 3", cat: "image", icon: "fas fa-image", color: "#14b8a6", price: "Freemium", badge: "Популярно", desc: "Генерация картинок от OpenAI внутри ChatGPT. Понимает сложные промпты.", tags: ["Реализм", "Текст"] },
+            { id: 11, name: "Stable Diffusion", cat: "image", icon: "fas fa-infinity", color: "#f59e0b", price: "Free", badge: "", desc: "Открытая модель. Можно запустить у себя на ПК или онлайн.", tags: ["Open Source", "Свобода"] },
+            { id: 12, name: "Leonardo AI", cat: "image", icon: "fas fa-palette", color: "#6366f1", price: "Freemium", badge: "Хит", desc: "Генератор для геймдевов и художников. Много моделей.", tags: ["GameDev", "Аватарки"] },
+            { id: 13, name: "Kandinsky", cat: "image", icon: "fas fa-shapes", color: "#f43f5e", price: "Free", badge: "RU", desc: "Российская нейросеть от Сбера. Понимает русский язык.", tags: ["Русский", "Free"] },
+            { id: 14, name: "Ideogram", cat: "image", icon: "fas fa-font", color: "#000", price: "Free", badge: "", desc: "Лучше всех пишет текст внутри картинки.", tags: ["Текст", "Логотипы"] },
+            { id: 15, name: "Adobe Firefly", cat: "image", icon: "fas fa-fire", color: "#0ea5e9", price: "Freemium", badge: "", desc: "Генерация от Adobe. Интеграция с Photoshop.", tags: ["Дизайн", "Photoshop"] },
+            { id: 16, name: "Playground AI", cat: "image", icon: "fas fa-gamepad", color: "#84cc16", price: "Free", badge: "", desc: "Удобный интерфейс, 500 генераций в день бесплатно.", tags: ["Free", "Удобство"] },
+            { id: 17, name: "Remove.bg", cat: "image", icon: "fas fa-eraser", color: "#22c55e", price: "Freemium", badge: "", desc: "Мгновенное удаление фона с фотографий.", tags: ["Фон", "Редактор"] },
+            { id: 18, name: "Photoroom", cat: "image", icon: "fas fa-store", color: "#a855f7", price: "Freemium", badge: "", desc: "Создание студийных фото товара для маркетплейсов.", tags: ["Товар", "Бизнес"] },
+
+            // VIDEO
+            { id: 19, name: "Runway Gen-2", cat: "video", icon: "fas fa-film", color: "#8b5cf6", price: "Freemium", badge: "Топ", desc: "Генерация видео из текста или картинки. Профессиональный инструмент.", tags: ["Генерация", "VFX"] },
+            { id: 20, name: "Pika Labs", cat: "video", icon: "fas fa-video", color: "#fbbf24", price: "Free", badge: "Новинка", desc: "Анимация объектов и генерация видео через Discord.", tags: ["Анимация", "Discord"] },
+            { id: 21, name: "HeyGen", cat: "video", icon: "fas fa-user-tie", color: "#ef4444", price: "Paid", badge: "", desc: "Создание говорящих аватаров для презентаций и обучения.", tags: ["Аватар", "Презентации"] },
+            { id: 22, name: "Synthesia", cat: "video", icon: "fas fa-user-circle", color: "#06b6d4", price: "Paid", badge: "", desc: "Видео с ИИ-ведущими на любом языке.", tags: ["Бизнес", "Обучение"] },
+            { id: 23, name: "Lumen5", cat: "video", icon: "fas fa-play-circle", color: "#3b82f6", price: "Freemium", badge: "", desc: "Превращает статьи и посты в видео для соцсетей.", tags: ["SMM", "Автоматизация"] },
+            { id: 24, name: "Descript", cat: "video", icon: "fas fa-cut", color: "#64748b", price: "Freemium", badge: "", desc: "Монтаж видео через редактирование текста. Удаление пауз.", tags: ["Монтаж", "Подкасты"] },
+
+            // AUDIO
+            { id: 25, name: "ElevenLabs", cat: "audio", icon: "fas fa-microphone-alt", color: "#3b82f6", price: "Freemium", badge: "Топ", desc: "Самый реалистичный синтез речи. Клонирование голоса.", tags: ["Голос", "Озвучка"] },
+            { id: 26, name: "Suno AI", cat: "audio", icon: "fas fa-music", color: "#ec4899", price: "Freemium", badge: "Хит", desc: "Генерация полноценных песен с вокалом по тексту.", tags: ["Музыка", "Песни"] },
+            { id: 27, name: "Udio", cat: "audio", icon: "fas fa-headphones", color: "#a855f7", price: "Free", badge: "Новинка", desc: "Конкурент Suno. Высокое качество музыкальных треков.", tags: ["Музыка", "Треки"] },
+            { id: 28, name: "Mubert", cat: "audio", icon: "fas fa-drum", color: "#10b981", price: "Freemium", badge: "", desc: "Генерация музыки для видео, подкастов и стримов.", tags: ["Фон", "Креатив"] },
+            { id: 29, name: "AIVA", cat: "audio", icon: "fas fa-compact-disc", color: "#f59e0b", price: "Freemium", badge: "", desc: "Композитор классической и кинематографической музыки.", tags: ["Классика", "Саундтрек"] },
+            { id: 30, name: "Whisper", cat: "audio", icon: "fas fa-closed-captioning", color: "#6366f1", price: "Free", badge: "", desc: "Распознавание речи от OpenAI. Перевод аудио в текст.", tags: ["Транскрибация", "OpenAI"] },
+            { id: 31, name: "Krisp", cat: "audio", icon: "fas fa-volume-mute", color: "#1e293b", price: "Freemium", badge: "", desc: "Удаление шума и эха в реальном времени на созвонах.", tags: ["Звонки", "Шум"] },
+
+            // CODE
+            { id: 32, name: "GitHub Copilot", cat: "code", icon: "fab fa-github", color: "#000", price: "Paid", badge: "Топ", desc: "Лучший ИИ-ассистент для кода внутри VS Code.", tags: ["Код", "Dev"] },
+            { id: 33, name: "Cursor", cat: "code", icon: "fas fa-terminal", color: "#22c55e", price: "Free", badge: "Хит", desc: "IDE на базе VS Code с глубоким ИИ-интегрированием.", tags: ["IDE", "GPT-4"] },
+            { id: 34, name: "Replit AI", cat: "code", icon: "fas fa-laptop-code", color: "#f26207", price: "Freemium", badge: "", desc: "Написание и запуск кода в браузере с ИИ-помощью.", tags: ["Онлайн", "Шаблоны"] },
+            { id: 35, name: "Tabnine", cat: "code", icon: "fas fa-keyboard", color: "#6366f1", price: "Freemium", badge: "", desc: "Автодополнение кода, учитывающее контекст проекта.", tags: ["Автодополнение", "Скорость"] },
+            { id: 36, name: "Phind", cat: "code", icon: "fas fa-search-location", color: "#14b8a6", price: "Free", badge: "", desc: "Поисковик для разработчиков. Решает ошибки кода.", tags: ["Поиск", "Debug"] },
+
+            // RESEARCH & OFFICE
+            { id: 37, name: "Perplexity AI", cat: "research", icon: "fas fa-search", color: "#14b8a6", price: "Free", badge: "Топ", desc: "Поисковик с ИИ. Дает ответы со ссылками на источники.", tags: ["Поиск", "Факты"] },
+            { id: 38, name: "Consensus", cat: "research", icon: "fas fa-book", color: "#3b82f6", price: "Free", badge: "", desc: "Поиск по научным статьям. Анализ исследований.", tags: ["Наука", "Статьи"] },
+            { id: 39, name: "Gamma", cat: "office", icon: "fas fa-file-powerpoint", color: "#a855f7", price: "Freemium", badge: "Хит", desc: "Создание презентаций (PPT) и сайтов за секунды.", tags: ["Презентации", "Дизайн"] },
+            { id: 40, name: "Beautiful.ai", cat: "office", icon: "fas fa-chart-line", color: "#ec4899", price: "Paid", badge: "", desc: "Умные шаблоны презентаций, которые сами выравниваются.", tags: ["Презентации", "Шаблоны"] },
+            { id: 41, name: "Otter.ai", cat: "office", icon: "fas fa-comments", color: "#0ea5e9", price: "Freemium", badge: "", desc: "Записывает встречи и делает заметки автоматически.", tags: ["Встречи", "Заметки"] },
+            { id: 42, name: "Trello AI", cat: "office", icon: "fab fa-trello", color: "#0079bf", price: "Paid", badge: "", desc: "Управление проектами с помощью ИИ-подсказок.", tags: ["Планирование", "Задачи"] },
+            { id: 43, name: "Fireflies.ai", cat: "office", icon: "fas fa-fire-alt", color: "#f59e0b", price: "Freemium", badge: "", desc: "Транскрибация и анализ голосовых встреч.", tags: ["Аудио", "CRM"] },
+            { id: 44, name: "Slite", cat: "office", icon: "fas fa-lightbulb", color: "#facc15", price: "Freemium", badge: "", desc: "База знаний с ИИ-поиском по документам.", tags: ["Wiki", "Документы"] },
+            { id: 45, name: "Zapier AI", cat: "office", icon: "fas fa-bolt", color: "#f97316", price: "Paid", badge: "", desc: "Автоматизация рабочих процессов с помощью ИИ.", tags: ["Автоматизация", "NoCode"] },
+            
+            // OTHER / UTILS
+            { id: 46, name: "DeepL", cat: "text", icon: "fas fa-language", color: "#0f172a", price: "Free", badge: "", desc: "Самый точный переводчик текстов в мире.", tags: ["Перевод", "Текст"] },
+            { id: 47, name: "Magical", cat: "office", icon: "fas fa-magic", color: "#6366f1", price: "Free", badge: "", desc: "Шаблоны текста и автозаполнение форм в браузере.", tags: ["Текст", "Скорость"] },
+            { id: 48, name: "Grammarly", cat: "text", icon: "fas fa-spell-check", color: "#22c55e", price: "Free", badge: "", desc: "Проверка грамматики и стиля текста (Eng).", tags: ["Грамматика", "Английский"] },
+            { id: 49, name: "Canva AI", cat: "image", icon: "fab fa-canva", color: "#00c4cc", price: "Freemium", badge: "", desc: "Генерация картинок и редактирование фото внутри Canva.", tags: ["Дизайн", "SMM"] },
+            { id: 50, name: "Photopea", cat: "image", icon: "fas fa-adjust", color: "#18a49d", price: "Free", badge: "", desc: "Онлайн редактор как Photoshop. Открытие PSD.", tags: ["Редактор", "PSD"] }
+        ];
+
+        // === СОСТОЯНИЕ ПРИЛОЖЕНИЯ ===
+        let currentPage = 1;
+        const itemsPerPage = 12;
+        let currentFilter = 'all';
+        let filteredData = [...database];
+
+        // === ИНИЦИАЛИЗАЦИЯ ===
+        window.onload = () => {
+            checkAuth();
+            renderGrid('homeGrid', database.filter(t => t.badge === 'Топ' || t.badge === 'Хит').slice(0, 4));
+            applyFilterAndRender();
+        };
+
+        // === НАВИГАЦИЯ ===
+        function showPage(pageName) {
+            if (pageName === 'profile' && !isLoggedIn()) {
+                openModal('auth');
+                return;
+            }
+
+            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+            document.getElementById(`page-${pageName}`).style.display = 'block';
+
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            const activeLink = document.querySelector(`.nav-link[onclick="showPage('${pageName}')"]`);
+            if (activeLink) activeLink.classList.add('active');
+
+            window.scrollTo(0, 0);
+        }
+
+        // === ЛОГИКА КАТАЛОГА ===
+        function filterCategory(cat) {
+            currentFilter = cat;
+            currentPage = 1;
+            
+            // Обновление UI фильтров
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            applyFilterAndRender();
+        }
+
+        function handleSearch(query) {
+            if (query.length > 2) {
+                showPage('catalog');
+                filteredData = database.filter(t => 
+                    t.name.toLowerCase().includes(query.toLowerCase()) || 
+                    t.desc.toLowerCase().includes(query.toLowerCase())
+                );
+                currentPage = 1;
+                renderCatalog();
+            } else if (query.length === 0) {
+                filteredData = database;
+                renderCatalog();
+            }
+        }
+
+        function applyFilterAndRender() {
+            if (currentFilter === 'all') {
+                filteredData = [...database];
+            } else {
+                filteredData = database.filter(t => t.cat === currentFilter);
+            }
+            renderCatalog();
+        }
+
+        function renderCatalog() {
+            renderGrid('catalogGrid', paginate(filteredData, currentPage, itemsPerPage));
+            renderPagination();
+        }
+
+        function paginate(arr, page, limit) {
+            return arr.slice((page - 1) * limit, page * limit);
+        }
+
+        function renderGrid(containerId, data) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            data.forEach(tool => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = () => openToolModal(tool);
+                card.innerHTML = `
+                    ${tool.badge ? `<span class="card-badge">${tool.badge}</span>` : ''}
+                    <div class="card-icon" style="color: ${tool.color}"><i class="${tool.icon}"></i></div>
+                    <h3 class="card-title">${tool.name}</h3>
+                    <span class="card-cat">${getCatName(tool.cat)}</span>
+                    <p class="card-desc">${tool.desc}</p>
+                    <div class="card-footer">
+                        <span class="price">${tool.price}</span>
+                        <span style="color: var(--text-muted); font-size: 0.8rem;">Подробнее</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderPagination() {
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            const container = document.getElementById('pagination');
+            container.innerHTML = '';
+
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+                btn.innerText = i;
+                btn.onclick = () => {
+                    currentPage = i;
+                    renderCatalog();
+                    window.scrollTo(0, 0);
+                };
+                container.appendChild(btn);
+            }
+        }
+
+        function getCatName(cat) {
+            const names = { text: 'Текст', image: 'Картинки', video: 'Видео', audio: 'Аудио', code: 'Код', research: 'Наука', office: 'Офис' };
+            return names[cat] || cat;
+        }
+
+        // === КОЛЛЕКЦИИ ===
+        function openCollection(type) {
+            showPage('catalog');
+            
+            // Сброс фильтров
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            document.querySelector('.chip:first-child').classList.add('active'); // Set "Все" active visually if needed, or custom logic
+            
+            // Логика фильтрации коллекций
+            if (type === 'content') filteredData = database.filter(t => ['text', 'image', 'video'].includes(t.cat));
+            else if (type === 'code') filteredData = database.filter(t => t.cat === 'code');
+            else if (type === 'image') filteredData = database.filter(t => t.cat === 'image');
+            else if (type === 'office') filteredData = database.filter(t => t.cat === 'office');
+            
+            currentFilter = 'all'; // Визуально сбросить
+            currentPage = 1;
+            renderCatalog();
+        }
+
+        // === МОДАЛКИ ===
+        function openModal(type) {
+            document.getElementById(`${type}Modal`).style.display = 'flex';
+        }
+        function closeModal(type) {
+            document.getElementById(`${type}Modal`).style.display = 'none';
+        }
+
+        function openToolModal(tool) {
+            document.getElementById('modal-icon').innerHTML = `<i class="${tool.icon}" style="color: ${tool.color}"></i>`;
+            document.getElementById('modal-title').innerText = tool.name;
+            document.getElementById('modal-cat').innerText = getCatName(tool.cat);
+            document.getElementById('modal-desc').innerText = tool.desc;
+            document.getElementById('modal-price').innerText = tool.price;
+            document.getElementById('modal-link').href = `https://www.google.com/search?q=${tool.name}`; // Поиск в гугле, если нет прямого урла
+            
+            const tagsContainer = document.getElementById('modal-tags');
+            tagsContainer.innerHTML = tool.tags.map(t => `<span class="tag">${t}</span>`).join('');
+            
+            openModal('tool');
+        }
+
+        // === АВТОРИЗАЦИЯ ===
+        function login() {
+            const user = { name: "AI User", email: "user@aihub.com", avatar: "https://ui-avatars.com/api/?name=AI+User&background=random" };
+            localStorage.setItem('ai_user', JSON.stringify(user));
+            closeModal('auth');
+            checkAuth();
+            showPage('profile');
+        }
+
+        function logout() {
+            localStorage.removeItem('ai_user');
+            checkAuth();
+            showPage('home');
+        }
+
+        function isLoggedIn() {
+            return localStorage.getItem('ai_user');
+        }
+
+        function checkAuth() {
+            const user = JSON.parse(localStorage.getItem('ai_user'));
+            if (user) {
+                document.getElementById('loginBtn').style.display = 'none';
+                document.getElementById('userProfile').style.display = 'flex';
+                document.getElementById('userName').innerText = user.name;
+                document.getElementById('userAvatar').src = user.avatar;
+                // Profile page
+                document.getElementById('profileBigName').innerText = user.name;
+                document.getElementById('profileBigEmail').innerText = user.email;
+                document.getElementById('profileBigAvatar').src = user.avatar;
+            } else {
+                document.getElementById('loginBtn').style.display = 'block';
+                document.getElementById('userProfile').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
